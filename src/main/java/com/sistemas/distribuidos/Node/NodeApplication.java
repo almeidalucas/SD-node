@@ -17,7 +17,8 @@ import java.util.List;
 /**
  * @author Lucas Almeida
  * Realiza configurações necessárias para ouvir serviço WebSocket
- * Inicia serviço e mantém no ar ouvindo a url determinada*/
+ * Inicia serviço e mantém online ouvindo a url determinada
+ * */
 @SpringBootApplication
 public class NodeApplication {
 

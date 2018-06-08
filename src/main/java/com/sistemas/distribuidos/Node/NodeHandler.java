@@ -16,8 +16,8 @@ public class NodeHandler extends StompSessionHandlerAdapter {
   /*Assim que subir o projeto o método é executado*/
   @Override
   public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-    session.subscribe("/ws-client/hello", this);
-    session.send("/app/hello", "Nó conectado!");
+    session.subscribe("/ws-client/node", this);
+    session.send("/manager/node", "Nó conectado!");
 
     System.out.println("Conectado!");
   }
