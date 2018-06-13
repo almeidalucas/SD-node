@@ -10,14 +10,27 @@ import java.lang.reflect.Type;
 /**
  * @author Lucas Almeida
  * Classe criada para tratar eventos
- * */
+ */
 public class NodeHandler extends StompSessionHandlerAdapter {
+  private StompSession sessionHandler = null;
+  private String nodeId;
 
   /*Assim que subir o projeto o método é executado*/
   @Override
   public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+    sessionHandler = session;
     session.subscribe("/ws-client/node", this);
-    session.send("/manager/node", "Nó conectado!");
+    NodeItem nodeItem = new NodeItem();
+    nodeId = sessionHandler.getSessionId();
+    nodeItem.setNodeId(nodeId);
+
+    session.send("/manager/addNode", nodeItem);
+    try {
+      Thread.sleep(1000);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    session.send("/manager/node", "TESTE");
 
     System.out.println("Conectado!");
   }
@@ -31,12 +44,17 @@ public class NodeHandler extends StompSessionHandlerAdapter {
   /*Define o tipo do retorno*/
   @Override
   public Type getPayloadType(StompHeaders headers) {
-    return String.class;
+    return NodeItem.class;
   }
 
   /*Assim que uma chamada for feita para url inscrita esse método é executado*/
   @Override
   public void handleFrame(StompHeaders headers, Object payload) {
-    System.out.println("Recebido com sucesso: " + payload.toString());
+    NodeItem item = (NodeItem) payload;
+    if (nodeId.equals(item.getNodeId())) {
+      System.out.println("Recebido com sucesso id " + item.getNodeId() + " -> " + item.toString());
+      item.getList().sort(Integer::compareTo);
+      sessionHandler.send("/manager/ordered-list", item);
+    }
   }
 }

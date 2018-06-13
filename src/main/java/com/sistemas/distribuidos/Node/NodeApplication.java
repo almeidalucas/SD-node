@@ -2,7 +2,7 @@ package com.sistemas.distribuidos.Node;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.messaging.converter.StringMessageConverter;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
@@ -29,7 +29,7 @@ public class NodeApplication {
 
     SockJsClient sockJsClient = new SockJsClient(transports);
     WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
-    stompClient.setMessageConverter(new StringMessageConverter());
+    stompClient.setMessageConverter(new MappingJackson2MessageConverter());
     stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
 
     String url = "ws://localhost:8090/sistemas-distribuidos";
