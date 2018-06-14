@@ -30,7 +30,7 @@ public class NodeHandler extends StompSessionHandlerAdapter {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    session.send("/manager/node", "TESTE");
+    //session.send("/manager/node", "TESTE");
 
     System.out.println("Conectado!");
   }
